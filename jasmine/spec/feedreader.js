@@ -72,9 +72,7 @@ $(function() {
 
     describe('Initial Entries', function() {
       beforeEach(function(done) {
-        loadFeed(0, function() {
-          done();
-        });
+        loadFeed(0, done);
       });
       /* Test ensures that when the loadFeed function is called and completes
        * its work, there is at least a single entry within the .feed container.
