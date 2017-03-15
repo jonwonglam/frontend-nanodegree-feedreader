@@ -80,7 +80,7 @@ $(function() {
        * its work, there is at least a single entry within the .feed container.
        */
       it('should load at least one entry when loadFeed() is called', function(done) {
-        expect($('.feed').children().length).toBeGreaterThan(0);
+        expect($('.feed .entry').length).toBeGreaterThan(0);
         done();
       });
     });
@@ -90,13 +90,17 @@ $(function() {
           newContentURL = "";
 
       beforeEach(function(done) {
+        // First async call
         loadFeed(0, function() {
           initialContentURL = $('.entry-link').first().attr('href');
+          // Second async call called within the success function of the first,
+          // to prevent race conditions.
+          loadFeed(1, function() {
+            newContentURL = $('.entry-link').first().attr('href');
+            done();
+          });
         });
-        loadFeed(1, function() {
-          newContentURL = $('.entry-link').first().attr('href');
-          done();
-        })
+
       });
 
       /* Ensures that when a new feed is loaded by the loadFeed function,
